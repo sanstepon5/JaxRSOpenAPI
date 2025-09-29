@@ -9,6 +9,7 @@ import fr.istic.taa.jaxrs.domain.Quiz;
 import fr.istic.taa.jaxrs.domain.Student;
 import fr.istic.taa.jaxrs.domain.Teacher;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Path("quiz")
 @Produces({"application/json"})
+@Tag(name = "Quiz")
 public class QuizResource {
     QuizDAO quizDAO = new QuizDAO();
     TeacherDAO teacherDAO = new TeacherDAO();

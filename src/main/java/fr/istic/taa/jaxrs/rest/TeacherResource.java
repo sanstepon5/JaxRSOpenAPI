@@ -3,6 +3,7 @@ package fr.istic.taa.jaxrs.rest;
 import fr.istic.taa.jaxrs.dao.generic.TeacherDAO;
 import fr.istic.taa.jaxrs.domain.Teacher;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Path("teacher")
 @Produces({"application/json"})
+@Tag(name = "Teacher")
 public class TeacherResource {
     TeacherDAO teacherDAO = new TeacherDAO();
 

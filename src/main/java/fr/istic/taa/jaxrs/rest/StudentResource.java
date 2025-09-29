@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Path("student")
 @Produces({"application/json"})
+@Tag(name = "Student")
 public class StudentResource {
     StudentDAO studentDAO = new StudentDAO();
 
