@@ -4,4 +4,8 @@ import fr.istic.taa.jaxrs.domain.Question;
 
 
 public class QuestionDAO extends AbstractJpaDao<Long, Question>{
+    public QuestionDAO() {
+        super();
+        setClazz(Question.class);
+    }
 }

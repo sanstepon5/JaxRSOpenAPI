@@ -1,5 +1,7 @@
 package fr.istic.taa.jaxrs;
 
+import fr.istic.taa.jaxrs.dao.generic.TeacherDAO;
+import fr.istic.taa.jaxrs.domain.Teacher;
 import io.undertow.Undertow;
 import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer;
 
@@ -14,6 +16,8 @@ public class RestServer {
     private static final Logger logger = Logger.getLogger(RestServer.class.getName());
 
     public static void main( String[] args ) {
+//        TeacherDAO teacherDAO = new TeacherDAO();
+//        teacherDAO.save(new Teacher("John", "Rest"));
 
         UndertowJaxrsServer ut = new UndertowJaxrsServer();
 

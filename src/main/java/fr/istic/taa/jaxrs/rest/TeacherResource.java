@@ -9,7 +9,7 @@ import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Path("teacher")
-@Produces({"application/json", "application/xml"})
+@Produces({"application/json"})
 public class TeacherResource {
     TeacherDAO teacherDAO = new TeacherDAO();
 
