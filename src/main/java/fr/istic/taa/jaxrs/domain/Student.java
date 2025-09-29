@@ -1,5 +1,6 @@
 package fr.istic.taa.jaxrs.domain;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Schema(description = "Un étudiant avec son age et numéro étudiant")
 public class Student extends User implements Serializable {
     private int studentNumber;
     private int age;
