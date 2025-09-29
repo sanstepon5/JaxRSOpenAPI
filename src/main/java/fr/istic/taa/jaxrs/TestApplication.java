@@ -39,6 +39,7 @@ public class TestApplication extends Application {
         clazzes.add(QuizResource.class);
         clazzes.add(QuestionResource.class);
         clazzes.add(AnswerResource.class);
+        clazzes.add(SwaggerResource.class);
 //        clazzes.add(AcceptHeaderOpenApiResource.class);
          
 
