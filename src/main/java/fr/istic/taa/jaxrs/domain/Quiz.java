@@ -14,7 +14,7 @@ public class Quiz implements Serializable {
 
     private int accessCode;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.MERGE)
     private List<Question> questions;
 
     @ManyToOne

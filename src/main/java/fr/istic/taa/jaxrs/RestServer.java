@@ -16,8 +16,8 @@ public class RestServer {
     private static final Logger logger = Logger.getLogger(RestServer.class.getName());
 
     public static void main( String[] args ) {
-//        TeacherDAO teacherDAO = new TeacherDAO();
-//        teacherDAO.save(new Teacher("John", "Rest"));
+        TeacherDAO teacherDAO = new TeacherDAO();
+        teacherDAO.save(new Teacher("John", "Rest"));
 
         UndertowJaxrsServer ut = new UndertowJaxrsServer();
 
