@@ -1,0 +1,19 @@
+package fr.istic.taa.jaxrs.mappers;
+
+import fr.istic.taa.jaxrs.domain.Student;
+import fr.istic.taa.jaxrs.dto.StudentDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
+
+@Mapper
+public interface StudentMapper {
+    StudentMapper INSTANCE = Mappers.getMapper(StudentMapper.class);
+
+    @Mapping(target = "quizIds",
+            expression = "java(student.getQuizList() == null ? null : student.getQuizList().stream().map(q -> q.getId()).collect(Collectors.toList()))")
+    StudentDTO toDto(Student student);
+
+    @Mapping(target = "quizzList", ignore = true)
+    Student toEntity(StudentDTO dto);
+}

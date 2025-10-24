@@ -8,6 +8,11 @@
 	<version>1.0-SNAPSHOT</version>
 	<name>jaxrs-example</name>
 	<url>http://maven.apache.org</url>
+
+    <properties>
+        <org.mapstruct.version>1.6.3</org.mapstruct.version>
+    </properties>
+
 	<dependencies>
 
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
@@ -84,7 +89,13 @@
 			<version>2.2.15</version>
 		</dependency>
 
-	</dependencies>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
+        </dependency>
+    </dependencies>
+
 	<build>
 		<defaultGoal>install</defaultGoal>
 		<plugins>
@@ -95,9 +106,16 @@
 				<configuration>
 					<source>11</source>
 					<target>11</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+                        <!-- other annotation processors -->
+                    </annotationProcessorPaths>
 				</configuration>
 			</plugin>
-
 		</plugins>
 	</build>
 </project>
