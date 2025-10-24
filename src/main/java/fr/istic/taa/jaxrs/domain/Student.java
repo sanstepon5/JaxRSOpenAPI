@@ -13,29 +13,29 @@ public class Student extends User implements Serializable {
     private int studentNumber;
     private int age;
     @ManyToMany
-    private List<Quiz> quizzList;
+    private List<Quiz> quizList;
 
     public Student(int studentNumber, int age) {
         this.studentNumber = studentNumber;
         this.age = age;
-        this.quizzList = new ArrayList<>();
+        this.quizList = new ArrayList<>();
     }
 
     public Student() {
-        this.quizzList = new ArrayList<>();
+        this.quizList = new ArrayList<>();
     }
     public List<Quiz> getQuizList() {
-        return quizzList;
+        return quizList;
     }
 
-    public void setQuiz(List<Quiz> quizzList) {
-        this.quizzList = quizzList;
+    public void setQuiz(List<Quiz> quizList) {
+        this.quizList = quizList;
     }
-    public void addQuiz(Quiz quizz) {
-        this.quizzList.add(quizz);
+    public void addQuiz(Quiz quiz) {
+        this.quizList.add(quiz);
     }
-    public void removeQuiz(Quiz quizz) {
-        this.quizzList.remove(quizz);
+    public void removeQuiz(Quiz quiz) {
+        this.quizList.remove(quiz);
     }
 
     public int getStudentNumber() {

@@ -12,30 +12,30 @@ public class Teacher extends User implements Serializable {
     private String firstName;
     private String lastName;
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.PERSIST)
-    private List<Quiz> quizzList;
+    private List<Quiz> quizList;
 
     public List<Quiz> getQuizList() {
-        return quizzList;
+        return quizList;
     }
 
     public void setQuiz(List<Quiz> quizzList) {
-        this.quizzList = quizzList;
+        this.quizList = quizzList;
     }
     public void addQuiz(Quiz quizz) {
-        this.quizzList.add(quizz);
+        this.quizList.add(quizz);
     }
     public void removeQuiz(Quiz quizz) {
-        this.quizzList.remove(quizz);
+        this.quizList.remove(quizz);
     }
 
     public Teacher(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.quizzList = new ArrayList<>();
+        this.quizList = new ArrayList<>();
     }
 
     public Teacher() {
-        this.quizzList = new ArrayList<>();
+        this.quizList = new ArrayList<>();
     }
 
     public String getFirstName() {
@@ -59,7 +59,7 @@ public class Teacher extends User implements Serializable {
         return "Teacher{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", quizzList=" + quizzList +
+                ", quizzList=" + quizList +
                 '}';
     }
 }

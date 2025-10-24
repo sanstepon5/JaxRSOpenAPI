@@ -1,8 +1,9 @@
 package fr.istic.taa.jaxrs.rest;
 
-import fr.istic.taa.jaxrs.dao.generic.AnswerDAO;
 import fr.istic.taa.jaxrs.domain.Answer;
 import fr.istic.taa.jaxrs.domain.Student;
+import fr.istic.taa.jaxrs.dto.AnswerDTO;
+import fr.istic.taa.jaxrs.service.AnswerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -18,7 +19,7 @@ import java.util.List;
 @Produces({"application/json"})
 @Tag(name = "Answer")
 public class AnswerResource {
-    AnswerDAO answerDAO = new AnswerDAO();
+    private final AnswerService answerService = new AnswerService();
 
   @GET
   @Path("/{answerId}")
@@ -34,8 +35,8 @@ public class AnswerResource {
                   @ApiResponse(responseCode = "404", description = "Aucune réponse avec cet ID")
           }
   )
-  public Answer getAnswerById(@PathParam("answerId") Long answerId)  {
-      return answerDAO.findOne(answerId);
+  public AnswerDTO getAnswerById(@PathParam("answerId") Long answerId)  {
+      return answerService.getById(answerId);
   }
 
   @GET
@@ -52,8 +53,8 @@ public class AnswerResource {
                   @ApiResponse(responseCode = "404", description = "Aucune réponse de quiz n'existe dans la BDD")
           }
   )
-  public List<Answer> getAnswers()  {
-      return answerDAO.findAll();
+  public List<AnswerDTO> getAnswers()  {
+      return answerService.getAll();
   }
 
   @POST
@@ -67,8 +68,9 @@ public class AnswerResource {
           }
   )
   public Response addAnswer(
-      @Parameter(description = "Answer object that needs to be added to the store", required = true) Answer answer) {
-    answerDAO.save(answer);
+      @Parameter(description = "Answer object that needs to be added to the store", required = true) AnswerDTO answer
+  ) {
+    answerService.create(answer);
     return Response.ok().entity("SUCCESS").build();
   }
 }

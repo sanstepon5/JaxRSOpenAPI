@@ -6,17 +6,15 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-import java.util.stream.Collectors;
-
 @Mapper
 public interface QuizMapper {
     QuizMapper INSTANCE = Mappers.getMapper(QuizMapper.class);
 
     @Mapping(target = "teacherId", source = "teacher.id")
     @Mapping(target = "questionIds",
-            expression = "java(quiz.getQuestions() == null ? null : quiz.getQuestions().stream().map(q -> q.getId()).collect(Collectors.toList()))")
+            expression = "java(quiz.getQuestions() == null ? null : quiz.getQuestions().stream().map(q -> q.getId()).collect(java.util.stream.Collectors.toList()))")
     @Mapping(target = "studentIds",
-            expression = "java(quiz.getStudents() == null ? null : quiz.getStudents().stream().map(s -> s.getId()).collect(Collectors.toList()))")
+            expression = "java(quiz.getStudents() == null ? null : quiz.getStudents().stream().map(s -> s.getId()).collect(java.util.stream.Collectors.toList()))")
     QuizDTO toDto(Quiz quiz);
 
     @Mapping(target = "teacher", ignore = true)

@@ -2,6 +2,8 @@ package fr.istic.taa.jaxrs.rest;
 
 import fr.istic.taa.jaxrs.dao.generic.QuestionDAO;
 import fr.istic.taa.jaxrs.domain.Question;
+import fr.istic.taa.jaxrs.dto.QuestionDTO;
+import fr.istic.taa.jaxrs.service.QuestionService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.*;
@@ -13,25 +15,25 @@ import java.util.List;
 @Produces({"application/json"})
 @Tag(name = "Question")
 public class QuestionResource {
-    QuestionDAO questionDAO = new QuestionDAO();
+    QuestionService questionService = new QuestionService();
 
   @GET
   @Path("/{questionId}")
-  public Question getQuestionById(@PathParam("questionId") Long questionId)  {
-      return questionDAO.findOne(questionId);
+  public QuestionDTO getQuestionById(@PathParam("questionId") Long questionId)  {
+      return questionService.getById(questionId);
   }
 
   @GET
   @Path("/")
-  public List<Question> getQuestions()  {
-      return questionDAO.findAll();
+  public List<QuestionDTO> getQuestions()  {
+      return questionService.getAll();
   }
 
   @POST
   @Consumes("application/json")
   public Response addQuestion(
-      @Parameter(description = "Question object that needs to be added to the store", required = true) Question question) {
-    questionDAO.save(question);
+      @Parameter(description = "Question object that needs to be added to the store", required = true) QuestionDTO question) {
+    questionService.create(question);
     return Response.ok().entity("SUCCESS").build();
   }
 }

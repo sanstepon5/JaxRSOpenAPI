@@ -14,7 +14,8 @@ public interface QuestionMapper {
 
     @Mapping(target = "quizId", source = "quiz.id")
     @Mapping(target = "answerIds",
-            expression = "java(question.getAnswers() == null ? null : question.getAnswers().stream().map(a -> a.getId()).collect(Collectors.toList()))")
+            expression = "java(question.getAnswers() == null ? null : question.getAnswers().stream().map(a -> a.getId()).collect(java.util.stream.Collectors.toList()))")
+    // Have to use import name because otherwise it doesn't want to import Collectors
     QuestionDTO toDto(Question question);
 
     @Mapping(target = "quiz", ignore = true)

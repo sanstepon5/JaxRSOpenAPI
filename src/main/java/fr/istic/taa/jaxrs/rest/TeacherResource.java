@@ -1,7 +1,7 @@
 package fr.istic.taa.jaxrs.rest;
 
-import fr.istic.taa.jaxrs.dao.generic.TeacherDAO;
-import fr.istic.taa.jaxrs.domain.Teacher;
+import fr.istic.taa.jaxrs.dto.TeacherDTO;
+import fr.istic.taa.jaxrs.service.TeacherService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.*;
@@ -13,25 +13,25 @@ import java.util.List;
 @Produces({"application/json"})
 @Tag(name = "Teacher")
 public class TeacherResource {
-    TeacherDAO teacherDAO = new TeacherDAO();
+    TeacherService teacherService = new TeacherService();
 
   @GET
   @Path("/{teacherId}")
-  public Teacher getTeacherById(@PathParam("teacherId") Long teacherId)  {
-      return teacherDAO.findOne(teacherId);
+  public TeacherDTO getTeacherById(@PathParam("teacherId") Long teacherId)  {
+      return teacherService.getById(teacherId);
   }
 
   @GET
   @Path("/")
-  public List<Teacher> getTeachers()  {
-      return teacherDAO.findAll();
+  public List<TeacherDTO> getTeachers()  {
+      return teacherService.getAll();
   }
 
   @POST
   @Consumes("application/json")
   public Response addTeacher(
-      @Parameter(description = "Teacher object that needs to be added to the store", required = true) Teacher teacher) {
-    teacherDAO.save(teacher);
+      @Parameter(description = "Teacher object that needs to be added to the store", required = true) TeacherDTO teacher) {
+      teacherService.create(teacher);
     return Response.ok().entity("SUCCESS").build();
   }
 }

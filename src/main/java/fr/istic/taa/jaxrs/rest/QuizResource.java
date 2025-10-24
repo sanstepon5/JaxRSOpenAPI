@@ -1,13 +1,13 @@
 package fr.istic.taa.jaxrs.rest;
 
-import fr.istic.taa.jaxrs.dao.generic.QuestionDAO;
-import fr.istic.taa.jaxrs.dao.generic.QuizDAO;
-import fr.istic.taa.jaxrs.dao.generic.StudentDAO;
-import fr.istic.taa.jaxrs.dao.generic.TeacherDAO;
-import fr.istic.taa.jaxrs.domain.Question;
-import fr.istic.taa.jaxrs.domain.Quiz;
-import fr.istic.taa.jaxrs.domain.Student;
-import fr.istic.taa.jaxrs.domain.Teacher;
+import fr.istic.taa.jaxrs.dto.QuestionDTO;
+import fr.istic.taa.jaxrs.dto.StudentDTO;
+import fr.istic.taa.jaxrs.dto.TeacherDTO;
+import fr.istic.taa.jaxrs.service.QuestionService;
+import fr.istic.taa.jaxrs.service.QuizService;
+import fr.istic.taa.jaxrs.service.StudentService;
+import fr.istic.taa.jaxrs.service.TeacherService;
+import fr.istic.taa.jaxrs.dto.QuizDTO;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.*;
@@ -20,45 +20,26 @@ import java.util.stream.Collectors;
 @Produces({"application/json"})
 @Tag(name = "Quiz")
 public class QuizResource {
-    QuizDAO quizDAO = new QuizDAO();
-    TeacherDAO teacherDAO = new TeacherDAO();
-    StudentDAO studentDAO = new StudentDAO();
-    QuestionDAO questionDAO = new QuestionDAO();
+    QuizService quizService = new QuizService();
 
   @GET
   @Path("/{quizId}")
-  public Quiz getQuizById(@PathParam("quizId") Long quizId)  {
-      return quizDAO.findOne(quizId);
+  public QuizDTO getQuizById(@PathParam("quizId") Long quizId)  {
+      return quizService.getById(quizId);
   }
 
   @GET
   @Path("/")
-  public List<Quiz> getQuizs()  {
-      return quizDAO.findAll();
+  public List<QuizDTO> getQuizs()  {
+      return quizService.getAll();
   }
 
   @POST
   @Consumes("application/json")
   public Response addQuiz(
-      @Parameter(description = "Quiz object that needs to be added to the store", required = true) Quiz quiz) {
-      //Finding all entities associated to ID's ( ca pue la merde JPA)
-
-    Teacher teacher = teacherDAO.findOne(quiz.getTeacher().getId());
-    quiz.setTeacher(teacher);
-
-
-      List<Student> students = quiz.getStudents().stream()
-              .map(s -> studentDAO.findOne(s.getId()))
-              .collect(Collectors.toList());
-      quiz.setStudents(students);
-
-      List<Question> questions = quiz.getQuestions().stream()
-              .map(q -> questionDAO.findOne(q.getId()))
-              .collect(Collectors.toList());
-      quiz.setQuestions(questions);
-    quizDAO.save(quiz);
-
-
+      @Parameter(description = "Quiz object that needs to be added to the store", required = true) QuizDTO quiz
+  ) {
+      quizService.create(quiz);
       return Response.ok().entity("SUCCESS").build();
   }
 }

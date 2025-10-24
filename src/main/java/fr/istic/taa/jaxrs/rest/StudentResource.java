@@ -2,6 +2,8 @@ package fr.istic.taa.jaxrs.rest;
 
 import fr.istic.taa.jaxrs.dao.generic.StudentDAO;
 import fr.istic.taa.jaxrs.domain.Student;
+import fr.istic.taa.jaxrs.dto.StudentDTO;
+import fr.istic.taa.jaxrs.service.StudentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,7 +19,7 @@ import java.util.List;
 @Produces({"application/json"})
 @Tag(name = "Student")
 public class StudentResource {
-    StudentDAO studentDAO = new StudentDAO();
+    StudentService studentService = new StudentService();
 
   @GET
   @Path("/{studentId}")
@@ -33,14 +35,14 @@ public class StudentResource {
                   @ApiResponse(responseCode = "404", description = "Aucun étudiant avec cet ID")
           }
   )
-  public Student getStudentById(@PathParam("studentId") Long studentId)  {
-      return studentDAO.findOne(studentId);
+  public StudentDTO getStudentById(@PathParam("studentId") Long studentId)  {
+      return studentService.getById(studentId);
   }
 
   @GET
   @Path("/")
-  public List<Student> getStudents()  {
-      return studentDAO.findAll();
+  public List<StudentDTO> getStudents()  {
+      return studentService.getAll();
   }
 
   @POST
@@ -54,8 +56,8 @@ public class StudentResource {
           }
   )
   public Response addStudent(
-      @Parameter(description = "Student object that needs to be added to the store", required = true) Student student) {
-    studentDAO.save(student);
+      @Parameter(description = "Student object that needs to be added to the store", required = true) StudentDTO student) {
+    studentService.create(student);
     return Response.ok().entity("SUCCESS").build();
   }
 }
