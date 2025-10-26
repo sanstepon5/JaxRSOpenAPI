@@ -13,6 +13,11 @@ public class Student extends User implements Serializable {
     private int studentNumber;
     private int age;
     @ManyToMany
+    @JoinTable(
+            name = "student_quiz",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "quiz_id")
+    )
     private List<Quiz> quizList;
 
     public Student(int studentNumber, int age) {

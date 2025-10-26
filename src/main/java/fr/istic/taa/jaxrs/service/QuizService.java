@@ -6,6 +6,7 @@ import fr.istic.taa.jaxrs.dto.QuizDTO;
 import fr.istic.taa.jaxrs.mappers.QuizMapper;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class QuizService {
@@ -24,6 +25,7 @@ public class QuizService {
     public List<QuizDTO> getAll() {
         return quizDAO.findAll().stream()
                 .map(mapper::toDto)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 

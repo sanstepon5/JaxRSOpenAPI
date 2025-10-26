@@ -20,7 +20,7 @@ public class Quiz implements Serializable {
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
-    @ManyToMany
+    @ManyToMany(mappedBy = "quizList")
     private List<Student> students;
 
     public Quiz(int accessCode) {

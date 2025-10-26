@@ -1,149 +1,56 @@
-## JaxRS + openAPI
+# TP TAA
 
-1. Import this project in your IDE, 
-2. Start the database
-3. Start the database viewer
-4. Start the backend. There is a main class to start the backend
+## Auteurs
+Stepan Tyurin, Yvan Douis - M2 IL Classique.
 
+## TP2 - JaxRS et OpenAPI
+Ce repo correspond au TP2 après la partie servlets (Partie 2 JaxRS et OpenAPI).
 
+Ce projet reutilise les mêmes DAO et entités que la partie précédente mais ajoute des DTO,
+une couche Service et une couche Rest pour accéder aux données. MapStruct est utilisé pour
+mapper les entités aux DTO. Nous n'avons pas pu intégrer Lombok à cause des problèmes que nous
+avons rencontrés liés aux MapStruct (attributs non trouvables etc) mais nous utilisons bien 
+Lombok dans le TP Spring.
 
-
-# Task Open API Integration 
-
-Now, we would like to ensure that our API can be discovered. The OpenAPI Initiative (OAI) was created by a consortium of forward-looking industry experts who recognize the immense value of standardizing on how REST APIs are described. As an open governance structure under the Linux Foundation, the OAI is focused on creating, evolving and promoting a vendor neutral description format. 
-
-APIs form the connecting glue between modern applications. Nearly every application uses APIs to connect with corporate data sources, third party data services or other applications. Creating an open description format for API services that is vendor neutral, portable and open is critical to accelerating the vision of a truly connected world.
-
-To do this integration first, I already add a dependencies to openAPI libraries. 
-
-```xml
-		<dependency>
-			<groupId>io.swagger.core.v3</groupId>
-			<artifactId>swagger-jaxrs2-jakarta</artifactId>
-			<version>2.2.15</version>
-		</dependency>
-
-		<dependency>
-			<groupId>io.swagger.core.v3</groupId>
-			<artifactId>swagger-jaxrs2-servlet-initializer-v2</artifactId>
-			<version>2.2.15</version>
-		</dependency>
+### Tester le résultat
+Pour tester, démarrer d'abord le serveur de BDD:
+```shell
+./run-hsqldb-server.sh
 ```
 
-Next you have to add OpenAPI Resource to your application
+Ensuite, il faut build le projet Maven et lancer [RestServer.java](src/main/java/fr/istic/taa/jaxrs/RestServer.java).
 
-Your application could be something like that. 
+La BDD initiale est vide, mais il est possible d'ajouter des entrées avec des requêtes POST
+et les retrouver avec des requêtes GET ou bien en regardant directement dans le navigateur,
+par exemple avec http://localhost:8080/teacher/ pour la liste des professeurs, http://localhost:8080/student/ pour la liste
+des étudiants, etc. Il y a également la recherche par Id, par exemple http://localhost:8080/teacher/1
 
-```java
-@ApplicationPath("/")
-public class RestApplication extends Application {
+### Requêtes de test
+Requêtes de test peuvent être trouvés dans le fichier [requests.md](requests.md).
 
-	@Override
-	public Set<Class<?>> getClasses() {
-		final Set<Class<?>> resources = new HashSet<>();
+### Documentation OpenAPI
+Le projet utilise des annotations OpenAPI pour donner une documentation des ressources REST. 
+Cette documentation peut être visualisée sur http://localhost:8080/api/. Notez que seules l'entité
+Answer a une documentation bien detaillé avec des descriptions etc.
 
+### Explication correspondance TP / repo / branch
+Les différents TP et parties de TP sont un peu partout, mais pour faire simple :
+- TP1 - JPA sur le premier [repo gitlab](https://gitlab2.istic.univ-rennes1.fr/styurin/tp-1-jpa-taa-m-2/-/tree/main?ref_type=heads) .
+- TP2 - Partie **Servlet** sur la branch [TP2 du premier repo gitlab](https://gitlab2.istic.univ-rennes1.fr/styurin/tp-1-jpa-taa-m-2/-/tree/TP2?ref_type=heads) `git checkout TP2`.
+- TP2 - Partie **Rest** sur un [nouveau repo github](https://github.com/sanstepon5/JaxRSOpenAPI) avec Jax et OpenAPI (vous êtes dessus).
+- TP3 sur le [deuxieme repo gitlab](https://gitlab2.istic.univ-rennes1.fr/styurin/taa-spring) ce qui contient donc tout le TP Spring
+- TP4 sur la branche TP4 du [même repo que le TP3](https://gitlab2.istic.univ-rennes1.fr/styurin/taa-spring) qui contient donc la partie sur l'application de Keycloak sur le projet Kahoot.
 
-		// SWAGGER endpoints
-		resources.add(OpenApiResource.class);
+Tous les liens ici redirigent vers les bons repos/branches.
 
-        //Your own resources. 
-        resources.add(PersonResource.class);
-....
-		return resources;
-	}
-}
-```
+### Explication diagramme UML
+Tous les TP se basent sur le même schéma de données représentant un système "Kahoot".
 
-Next start your server, you must have your api description available at [http://localhost:8080/openapi.json](http://localhost:8080/openapi.json)
+![diagramUML.png](diagramUML.png)
 
-### Integrate Swagger UI. 
+On a fait un diagramme UML en commun avec le groupe d'Axel et Yann (parce que ce n'est pas la chose la plus fun à faire)
+Peu de chose ont changé entre le diagramme et la DAO à part quelque noms. 
+Le diagramme contient de l'héritage dans la relation User, Student et Teacher. 
+Le diagramme est simple, mais on aurait dû faire moins de paramètres puisque j'ai l'impression qu'après cela, on a beaucoups trop remplis toutes les classes
+qui sont de toute manière là pour tester la structure et pas le contenu en soi.
 
-Next we have to integrate Swagger UI. We will first download it.
-https://github.com/swagger-api/swagger-ui
-
-Copy dist folder content in src/main/webapp/swagger in your project. 
-
-Edit index.html file to automatically load your openapi.json file. 
-
-At the end of the index.html, your must have something like that.
-
-```js
-   // Build a system
-      const ui = SwaggerUIBundle({
-        url: "http://localhost:8080/openapi.json",
-        dom_id: '#swagger-ui',
-        
-        ...
-```
-
-Next add a new resources to create a simple http server when your try to access to http://localhost:8080/api/.
-
-This new resources can be developped as follows
-
-```java
-package app.web.rest;
-
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.util.logging.Logger;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-
-@Path("/api")
-public class SwaggerResource {
-
-    private static final Logger logger = Logger.getLogger(SwaggerResource.class.getName());
-
-    @GET
-    public byte[] Get1() {
-        try {
-            return Files.readAllBytes(FileSystems.getDefault().getPath("src/main/webapp/swagger/index.html"));
-        } catch (IOException e) {
-            return null;
-        }
-    }
-
-    @GET
-    @Path("{path:.*}")
-    public byte[] Get(@PathParam("path") String path) {
-        try {
-            return Files.readAllBytes(FileSystems.getDefault().getPath("src/main/webapp/swagger/"+path));
-        } catch (IOException e) {
-            return null;
-        }
-    }
-
-}
-```
-
-Add this new resources in your application
-
-```java
-@ApplicationPath("/")
-public class RestApplication extends Application {
-
-
-	@Override
-	public Set<Class<?>> getClasses() {
-		final Set<Class<?>> resources = new HashSet<>();
-
-
-		// SWAGGER endpoints
-		resources.add(OpenApiResource.class);
-		resources.add(PersonResource.class);
-        //NEW LINE TO ADD
-		resources.add(SwaggerResource.class);
-
-		return resources;
-	}
-}
-```
-
-Restart your server and access to http://localhost:8080/api/, you should access to a swagger ui instance that provides documentation on your api. 
-
-You can follow this guide to show how you can specialise the documentation through annotations.
-
-https://github.com/swagger-api/swagger-samples/blob/2.0/java/java-resteasy-appclasses/src/main/java/io/swagger/sample/resource/PetResource.java

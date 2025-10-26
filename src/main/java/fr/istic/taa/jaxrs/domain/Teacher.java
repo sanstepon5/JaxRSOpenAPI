@@ -8,7 +8,6 @@ import java.util.List;
 
 @Entity
 public class Teacher extends User implements Serializable {
-
     private String firstName;
     private String lastName;
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.PERSIST)

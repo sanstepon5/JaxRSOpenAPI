@@ -94,7 +94,15 @@
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.42</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
+
 
 	<build>
 		<defaultGoal>install</defaultGoal>
@@ -112,7 +120,12 @@
                             <artifactId>mapstruct-processor</artifactId>
                             <version>${org.mapstruct.version}</version>
                         </path>
-                        <!-- other annotation processors -->
+
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.42</version>
+                        </path>
                     </annotationProcessorPaths>
 				</configuration>
 			</plugin>
